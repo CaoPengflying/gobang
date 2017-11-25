@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        #canvas{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="420" height="420"></canvas>
+</body>
+<script src="grid.js"></script>
+<script src="game.js"></script>
+<script src="chess.js"></script>
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext('2d');
+    context.beginPath();
+    grid.init();
+    grid.draw();
+    game.init();
+    canvas.addEventListener('mousedown',function (e) {
+        if(e.x<grid.margin-8 || e.x>grid.cls*grid.size+16 || e.y<grid.margin-8 || e.y>grid.size*grid.row+16){
+            return;
+        }
+        var pos = chess.convert(e.x,e.y);
+        if(chess.addChess(pos,game.turn)){
+            chess.draw(pos,game.turn);
+            if(game.judge(pos,game.turn)){
+                var res = game.turn==1?"黑棋胜利":"白棋胜利";
+                alert(res);
+            }else{
+                game.turn = -game.turn;
+            }
+        }
+    })
+</script>
+</html>
